@@ -1,0 +1,138 @@
+\documentclass[init,francais,RandD]{rapportPFE}  % pour une version française
+\usepackage{listings}
+\usepackage{indentfirst}
+
+\titre{Navigation et contrôle multi-robots pour l'inspection acoustique de structures métalliques}
+\title{Multi-robot navigation and control for acoustic inspection of metal plate structures}
+\firstname{Brandon}
+% \middlename{Jérémy}
+\lastname{Alves}
+\dateDebutPFE{9 janvier 2023}
+\dateFinPFE{30 juin 2023}
+\nomStructureAcceuil{INRIA}
+\villeStructureAccuel{Villeurbanne, France}
+% \logoStructureAccueil{width=1.5cm}{graphics/LogoStructureAccueil}
+\begin{encadrants}
+  \referent{Référent}{Olivier \Nom{Simonin}}{Professeur}{INSA Lyon}
+  \tuteur{Référent}{Cédric \Nom{Pradalier}}{Professeur}{Georgia Tech Europe}
+  \tuteur{Tuteur}{Mathieu \Nom{Maranzana}}{Maître de conférences}{INSA Lyon}
+\end{encadrants}
+\date{\today}
+
+\begin{document}
+	\maketitle
+	\begin{ResumeMotsCles}
+		% abstract no more than 12 lines.
+		\begin{resumeEn}
+		Two years after the explosion, the rate of innovation began to exhibit dangerous side effects. The explosive growth had provided an exciting validation of the collaborative hacker approach, but it had also led to over-complexity. "We had a Tower of Babel effect," says Guy Steele.\\
+		Such statements, while reflective of the hacker ethic, also reflected the difficulty of translating the loose, informal nature of that ethic into the rigid, legal language of copyright. In writing the GNU Emacs License, Stallman had done more than close up the escape hatch that permitted proprietary offshoots. He had expressed the hacker ethic in a manner understandable to both lawyer and hacker alike.\\
+		The German sociologist Max Weber once proposed that all great religions are built upon the "routinization" or "institutionalization" of charisma. Every successful religion, Weber argued, converts the charisma or message of the original religious leader into a social, political, and ethical apparatus more easily translatable across cultures and time.
+		\end{resumeEn}
+		\keywords{Eruditos~; obscuros~; occulte~; provinciae~; atrocium.}
+		% Résumé pas plus de 12 lignes
+		\begin{resumeFr}
+		Celles-ci sont par extraordinaire à huit heures. Au-delà des autorités, tout le paquet de linge blanc. Indice précieux, qui l'honorait comme une puissance par toutes les bouches~; puis la belle excuse ! Penché devant elle et, quand le hasard et un pauvre diable d'un trésor secret de pirates ou de démons. Saisissant son fusil, et puis la catastrophe qui l'avait prise sur le mur. Amour, tu ne me verras plus. Fumer la cigarette, elle redoublait ses étouffements. Soucieux de conserver toute sa vie à mal faire.
+		Courir sur la pointe du couteau de la rue en son costume~; j'en fus témoin. Ainsi il n'était même pas sérieusement importuné par son banquier. Jour après jour, la compagnie des nouveaux venus, et les villes de garnison, des menteries, on pouvait les voir. Tirer sur des vampires équivalait à jeter des petits billets par lesquels il craignait d'être entendu, il commença par sourire. Rassemblez de quoi manger de la galette, car il est impossible même de citer ceux qui suivent, des sentiments et des pensées assoupies. Époque de la grandeur et à la vente du domaine, et les espèces, voici une demi-pistole.
+		\end{resumeFr}
+		\motscles{Eruditos~; obscuros~; occulte~; provinciae~; atrocium.}
+	\end{ResumeMotsCles}
+		% \begin{remerciements}
+		%   Merci à tous. Commenter cet environnement s'il n'est pas nécessaire.
+		% \end{remerciements}
+	\setcounter{tocdepth}{3}
+	\tableofcontents
+	\cleardoublepage
+	\section{Introduction}
+		%Contexte,
+		Ce projet de fin d'étude s'inscrit dans le contexte plus large du projet européen BugWright2, qui vise à résoudre la problématique de l'inspection autonome et la maintenance de grandes structures métalliques avec des flottes hétérogènes de robots mobiles. Dans ce projet, nous nous concentrons sur le développement de stratégies de navigation pour un ensemble de robots mobiles utilisant des ondes ultrasoniques guidées pour réaliser l'inspection des plaques métalliques. En effet, les ondes guidées ont la particularité de se propager le long d'une plaque en interagissant avec la matière qui la compose, et en étant affectées par des changements de géométrie liés, en particulier, à la corrosion.
+
+		%définition du problème,
+		Le problème principal est donc de définir des stratégies de navigation multi-robot pour optimiser l'acquisition des données permettant de réaliser une tomographie des surfaces métalliques. Pour atteindre cet objectif, nous allons dans un premier temps effectuer une recherche bibliographique, puis mettre en place des méthodes de navigation dans un environnement de simulation. Enfin, nous envisagerons un déploiement sur différents robots en fonction des résultats obtenus. Ce projet sera réalisé en sous la supervision de Olivier Simonin (INSA Lyon CITI lab) et de Cédric Pradalier (CNRS IRL2958 GT).
+
+		%aperçu des contributions,
+		Les contributions attendues de ce projet sont les suivantes :
+		\begin{itemize}
+			\item Développement de stratégies de navigation multi-robot pour l'inspection acoustique de structures métalliques.
+			\item Optimisation de l'acquisition de données pour la réalisation de la tomographie.
+			\item Résolution des problèmes de coordination entre les robots et de synchronisation des horloges.
+			\item Implémentation des méthodes de navigation dans un environnement de simulation et leur déploiement sur des robots réels.
+		\end{itemize}
+
+		%plan du rapport
+		Dans ce dossier d'initialisation, nous présenterons le projet de fin d'étude avec son contexte, objectifs et environnement scientifique et technique. Nous discuterons également de l'organisation du projet de fin d'étude avec notamment les livrables attendus ainsi que le planning. Enfin nous présenterons les risques et les moyens de les gérer.
+	\section{Présentation du Projet de Fin d'Études}
+		\subsection{Contexte}
+			Le projet BugWright2 est un projet européen qui vise à résoudre la problématique de l'inspection des grandes structures métalliques, de type coques de bateaux, avec des flottes hétérogènes de robots mobiles. Ce projet est coordonné par C. Pradalier et implique de nombreux partenaires. Le contexte général de ce projet est donc l'inspection de structures métalliques, qui est un enjeu important pour la maintenance et la sécurité des infrastructures.
+
+			Dans ce projet, nous nous concentrons plus particulièrement sur l'utilisation de robots mobiles et d'ondes ultrasoniques guidées pour réaliser l'inspection de plaques métalliques. Les ondes ultrasoniques guidées ont la particularité de se propager le long d'une plaque en interagissant avec la matière qui la compose, et en étant affectées par des changements de géométrie liés, en particulier, à la corrosion. Cette technique permet donc de réaliser une tomographie de la zone à inspecter et potentiellement d'identifier et de localiser des points de corrosion. Cependant, cela nécessite de connaître précisément la position de l'émetteur et du récepteur ainsi que de synchroniser les horloges des deux entités.
+
+			En résumé, le contexte de ce projet est l'inspection de structures métalliques avec des robots mobiles utilisant des ondes ultrasoniques guidées.
+		\subsection{Objectifs}
+			L'objectif principal de ce projet est de définir des stratégies de navigation multi-robot pour optimiser l'acquisition de données permettant de réaliser la tomographie des structures métalliques, tout en résolvant les problèmes de communication et de coordination entre les robots.
+
+			Pour atteindre cet objectif global, il est prévu de réaliser les tâches suivantes :
+			\begin{itemize}
+				\item
+			\end{itemize}
+
+			Effectuer une recherche bibliographique sur les techniques de navigation multi-robot pour l'inspection acoustique de structures métalliques.
+			Mettre en place des méthodes de navigation dans un environnement de simulation.
+			Envisager un déploiement sur des robots réels en fonction des résultats obtenus dans l'environnement de simulation.
+			En résumé, les objectifs spécifiques de ce projet sont :
+
+			Développer des stratégies de navigation multi-robot pour l'inspection acoustique de structures métalliques.
+			Optimiser l'acquisition de données pour la réalisation de la tomographie.
+			Résoudre les problèmes de coordination entre les robots et de synchronisation des horloges.
+			Implémenter les méthodes de navigation dans un environnement de simulation et les déployer sur des robots réels.
+		\subsection{Environnement scientifique et technique.}
+			Ce projet de fin d'étude s'inscrit dans le domaine de la robotique, plus précisément dans celui de la navigation multi-robot pour l'inspection acoustique de structures métalliques. Il implique également la mise en œuvre d'ondes ultrasoniques guidées pour réaliser cette inspection.
+
+			Pour cela, les méthodes de navigation multi-robot seront développées en utilisant des outils de simulation de robotique. Ces outils permettront de simuler la mobilité des agents robotiques et les mesures entre agents. Les données collectées par les robots seront ensuite utilisées pour la réalisation de la tomographie.
+
+			Le projet sera mené en collaboration avec l'équipe d'Olivier Simonin de l'INSA Lyon et de Cédric Pradalier de l'IRL2958 GT-CNRS à Metz. L'équipe de l'INSA Lyon fournira l'expertise sur les environnements de simulations robotiques. Le laboratoire GT-CNRS à Metz sera utilisé pour la partie expérimentale.
+	\section{Organisation}
+		\subsection{Livrables}
+			Les livrables attendus de ce projet de fin d'étude sont les suivants :
+			\begin{itemize}
+				\item Un rapport de projet détaillant les recherches effectuées, les méthodes développées, les résultats obtenus et les conclusions. Ce rapport devra inclure une description détaillée des algorithmes de navigation développés et une analyse des résultats obtenus lors des tests en simulation et éventuellement sur des robots réels.
+				\item Les codes source des algorithmes de navigation développés, qui devront être commentés et documentés de manière à permettre une compréhension facile et une réutilisation éventuelle.
+				\item Des vidéos démontrant les résultats obtenus lors des tests en simulation.
+				\item Une présentation orale sur les résultats obtenus.
+			\end{itemize}
+
+
+
+		\subsection{Planning}
+			La partie 3.2 du dossier d'initialisation décrira le planning prévisionnel du projet de fin d'étude. Il est important de définir clairement les étapes clés du projet ainsi que les échéances pour chacune d'elles, afin de s'assurer que le projet se déroule de manière efficace et organisée.
+
+			Le planning prévisionnel comprendra les étapes suivantes :
+			\begin{enumerate}
+				\item Recherche bibliographique : cette étape consistera à effectuer une recherche approfondie sur les travaux existants en matière de navigation multi-robots pour l'inspection acoustique de structures métalliques.
+				\item Développement des algorithmes : une fois la recherche bibliographique terminée, l'étudiant développera les algorithmes de navigation multi-robots adaptés à l'inspection acoustique de structures métalliques.
+				\item Simulation : les algorithmes développés seront testés dans un environnement de simulation pour évaluer leur performance.
+				\item Tests expérimentaux : si les résultats de la simulation sont concluants, les algorithmes seront ensuite testés sur des robots réels.
+				\item Rapport de fin d'étude : enfin, l'étudiant rédigera un rapport détaillant les travaux effectués, les résultats obtenus et les contributions à la recherche.
+			\end{enumerate}
+			Il est important de noter que ces étapes ne sont pas nécessairement linéaires et qu'il peut y avoir des retours en arrière pour apporter des améliorations ou des modifications aux algorithmes développés.
+	\section{Gestion des risques}
+		La partie 4 du dossier d'initialisation du projet de fin d'étude, consacrée à la gestion des risques, a pour objectif de définir les risques potentiels liés au projet et de proposer des mesures pour les minimiser ou les éviter. Il est important d'identifier les risques en amont afin de pouvoir les gérer efficacement et de s'assurer que le projet se déroule de manière efficace et organisée.
+
+		Pour identifier les risques potentiels, il est nécessaire de réaliser une analyse de risques en prenant en compte les différentes étapes du projet et les différents acteurs impliqués. Il est important de considérer les risques liés aux différents aspects du projet, tels que les risques technologiques, les risques de personnel, les risques financiers, les risques réglementaires, etc.
+
+		Une fois les risques identifiés, il est nécessaire de proposer des mesures pour les minimiser ou les éviter. Ces mesures peuvent inclure :
+
+		la mise en place de plans d'urgence pour gérer les situations imprévues
+		la mise en place de procédures de gestion de projet pour s'assurer que le projet se déroule de manière efficace et organisée
+		la mise en place de mécanismes de surveillance pour s'assurer que les risques sont gérés efficacement
+		la mise en place de mécanismes de financement pour couvrir les risques financiers
+		la mise en place de mécanismes de formation pour s'assurer que le personnel est qualifié pour gérer les risques.
+		Il est important de noter que la gestion des risques est un processus continu qui doit être régulièrement mis à jour et révisé tout au long du projet pour s'assurer qu'il reste efficace. Il est également important de communiquer régulièrement sur les risques identifiés et les mesures prises pour les gérer avec les différents acteurs impliqués dans le projet.
+	\section{Conclusion}
+		En conclusion, ce projet de fin d'étude vise à développer des stratégies de navigation multi-robot pour optimiser l'acquisition de données permettant de réaliser une tomographie de la zone à inspecter, avec des ondes ultrasoniques guidées pour réaliser l'inspection de plaques métalliques. Nous avons défini les objectifs de ce projet, les livrables attendus, le planning et les risques potentiels pour ce projet. Le projet sera supervisé par l'équipe de O. Simonin et se déroulera au sein de l'INSA Lyon et de l'IRL2958 GT-CNRS à Metz. Nous sommes convaincus que les résultats de ce projet contribueront au développement de l'inspection automatique de structures métalliques en utilisant des flottes hétérogènes de robots mobiles.
+	% Bibliographie
+	% Annexes éventuelles (en plus des 30 pages demandées)
+	\bibliographystyle{unsrt}
+	\bibliography{rapportPFE}
+
+
+\end{document}
