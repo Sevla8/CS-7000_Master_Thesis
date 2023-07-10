@@ -1,7 +1,7 @@
 
 \chapter{Methodology}
 
-\section*{Solution proposal}
+\section{Solution Proposal}
 
 We present our proposed solution for the acoustic inspection of metal structures using multi-robot navigation strategies.
 We have developed three specific strategies to optimize data acquisition and enable the tomography of metallic surfaces.
@@ -17,7 +17,7 @@ These three strategies aim to map the metal surface and detect areas of corrosio
 We define these three navigation strategies in the following subsections.
 We also explain how the data structure used for mapping corrosion areas, an occupancy grid, is updated based on information collected by the robots' UGW sensors.
 
-\subsection*{Occupancy grid update process for mapping}
+\subsection{Occupancy Grid Update Process for Mapping}
 
 When scanning the surface to be inspected by a pair of transmitter and receiver robots, the transmitter robot emits an acoustic wave in the metal structure, which is then received by the receiver robot.
 The detection being considered as perfect, the receiver robot receives the wave emitted by the transmitter robot, without quasi-alteration of the power of the signal, if and only if the line segment between the two robots does not cross a zone of corrosion.
@@ -28,14 +28,14 @@ The presence of corrosion on the segment is therefore overestimated.
 The displacement strategies will aim to carry out several measurements, to reduce this overestimation, and approach the real shape of the corrosion.
 
 We now only need to determine which cells of the occupancy grid are crossed by the line segment between the two robots.
-% For this we use Bresenham's segment drawing algorithm~\cite{enwiki:1155124335} which is commonly used to determine the points of a discrete plane that need to be drawn in order to form an approximation of a line segment between two points given.
+For this we use Bresenham's segment drawing algorithm~\cite{enwiki:1155124335} which is commonly used to determine the points of a discrete plane that need to be drawn in order to form an approximation of a line segment between two points given.
 We detail our implementation of this algorithm in section~\ref{subsec:Bresenham}.
 
 As the metal surface is explored, the occupation grid is updated based on the information gathered by the robots.
 More precisely, the cells of the occupancy grid that identify corrosion elements are updated with the occupied state, while the cells that identify healthy areas are updated with the empty state.
 We thus end up with an occupation grid which represents the state of corrosion of the metal surface, with, for each corrosion zone, an approximation of the convex envelope of the corrosion zone.
 
-\subsection*{\textit{Roller Painting} navigation strategy}
+\subsection{\textit{Roller Painting} Navigation Strategy}
 
 The first navigation strategy we propose is the \textit{Roller Painting} navigation strategy.
 We chose this name for this strategy because the movement of the robots during this strategy is similar to that of a paint roller when painting a wall.
@@ -73,7 +73,7 @@ There is therefore not a large variation in the orientation of the transmitted a
 Thus, this strategy will only be able to approach the convex hulls of the corrosion zones by rectangles.
 Examples of occupancy grids resulting from the \textit{Roller Painting} navigation strategy, represented as images, where the cells of the grid correspond to the pixels of the images, are shown in appendix~\ref{annexe:resultat}, figure~\ref{fig:peinture_au_rouleau_resultats}.
 
-\subsection*{\textit{Nordic Skiing} navigation strategy}
+\subsection{\textit{Nordic Skiing} Navigation Strategy}
 
 The second strategy we propose is the navigation strategy \textit{Nordic skiing}.
 We chose this name for this strategy because the movement of the robots during this strategy is similar to the movement of a skier's skis.
@@ -121,7 +121,7 @@ The fact that the robots move following a parallel trajectory, but in a sequenti
 Thus, this strategy makes it possible to approximate the convex envelopes of the corrosion zones by more diverse and precise shapes than rectangles.
 Examples of occupation grids resulting from the navigation strategy \textit{Nordic Skiing}, represented in the form of images, where the cells of the grid correspond to the pixels of the images, are shown in appendix~\ref{annexe:resultat}, figure~\ref{fig:ski_nordique_resultats} and figure~\ref{fig:ski_nordique_resultats_2}.
 
-\subsection*{\textit{Polygonal Investigation} navigation strategy}
+\subsection{\textit{Polygonal Investigation} Navigation Strategy}
 
 The third strategy we propose is the \textit{Polygonal Investigation} navigation strategy.
 We have seen, previously, that at the end of the realization of the navigation strategy \textit{Roller Painting}, the convex hull of the corrosion zones was approximated by a rectangle.
@@ -227,7 +227,7 @@ This strategy requires two steps prior to its execution:
 The first step can be solved using a strongly connected component graph decomposition algorithm.
 A strongly connected component is defined at definition~\ref{def:scc}.
 We then consider our occupation grid, resulting from the exploration of one of the two previously defined strategies, as an undirected graph $G = (V, E)$, where $V$ is the set of vertices of the graph, corresponding to the cells of the occupancy grid and $E$ are the edges of the graph, corresponds to the adjacent cells.
-% This problem is well known and there are simple algorithms to solve it, such as Tarjan's algorithm~\cite{enwiki:1148118528}, of linear time complexity $O(|V| + |E|)$.
+This problem is well known and there are simple algorithms to solve it, such as Tarjan's algorithm~\cite{enwiki:1148118528}, of linear time complexity $O(|V| + |E|)$.
 We will not look further into this problem and entrust its resolution to the \textit{OpenCV} library.
 
 \begin{definition}[Strongly connected component (SCC)]
@@ -272,7 +272,7 @@ A second is to find an approximate solution using a meta-heuristic.
 \end{definition}
 
 The traveling salesman problem is an NP-complete~\ref{def:npc} problem.
-% It can be treated as an integer linear optimization problem~\cite{article244, gurobi25}.
+It can be treated as an integer linear optimization problem~\cite{article244, gurobi25}.
 To do this, we use the formulation presented in equation~\ref{eq:tsp}.
 
 \begin{equation}
@@ -306,18 +306,198 @@ The first two constraints ensure that each city is visited exactly once.
 The third constraint ensures that the cycle formed by the cities visited is simple, that is to say, that it does not contain sub-cycles.
 The last constraint ensures that the decision variables $x_{ij}$ are binary, with $x_{ij} = 1$ if the robot moves from city $i$ to city $j$ and $x_{ij} = 0$ otherwise.
 
-% The mTSP is an NP-hard problem~\ref{def:nph}~\cite{SUNDAR201639}.
-% This one can be solved using meta-heuristics like a genetic algorithm~\cite{SinghMTSP, Kiraly2011}
+The mTSP is an NP-hard problem~\ref{def:nph}~\cite{SUNDAR201639}.
+This one can be solved using meta-heuristics like a genetic algorithm~\cite{SinghMTSP, Kiraly2011}
 
 In the next sections, we will detail each navigation strategy, exposing the specific algorithms and mechanisms used to implement our proposed solution. We will also analyze the performance and results obtained through extensive experimentation and evaluation.
 
+\section{Algorithm Implementations}
 
+In this section, we highlight some of the different technical implementations we have developed to support our multi-robot navigation and control solutions in the context of acoustic inspection of metal structures.
+We begin by describing our adaptation of Bresenham's line algorithm~\cite{enwiki:1155124335}, widely used to determine which points of a discrete plane should be plotted in order to form a segment approximation of line between two given points.
+Next, we discuss the implementation of the \textit{Roller Painting} algorithm, which allows the robots to move simultaneously, following parallel trajectories.
+We continue with the implementation of the algorithm \textit{Nordic Skiing}, which allows the robots to move alternately, following parallel trajectories, thus modifying the orientation of the vector representing the direction of movement of the wave transmitted and received by the pair of robots.
+Additionally, we look at the implementation of the \textit{Polygonal Investigation} algorithm, which allows robots to examine suspected areas of corrosion more precisely.
+Finally, we present Cohen's $\kappa$ algorithm~\cite{enwiki:1130024730}, used to assess the quality and reliability of acoustic inspection results.
+We discuss in detail our implementation of this algorithm, which provides quantitative measures to evaluate the performance of robots in the inspection of metal structures.
+Each of these technical implementations contributes to the efficiency and accuracy of our multi-robot navigation and control approach, and will be discussed in detail in the following subsections.
 
+\subsection*{Bresenham's Line Algorithm}\label{subsec:Bresenham}
 
+\begin{algorithm}[h!]
+	\caption{Process of updating the occupancy grid using Bresenham's line algorithm.}
+	\label{alg:Bresenham}
+	\KwData{$P_1 \in \mathbb{R}^2$, $P_2 \in \mathbb{R}^2$, $pw \in \mathbb{R}$, $threshold \in \mathbb{R}$, $G$: $l \times w \rightarrow [\text{UNKNOWN}, \text{EMPTY}, \text{OCCUPIED}]$, $l \in \mathbb{N}$, $w \in \mathbb{N}$ \\
+		with $P_1$ and $P_2$ the two points to connect, $pw$ the power of the \gls{ugw}, $threshold$ the threshold above which the power of the \gls{ugw} is considered undistributed and $G$ the grid to update.}
+	\KwResult{The updated grid.}
+	$p_0 \gets \text{from\_position\_to\_grid\_coordinate}(P_1)$ \\
+	$p_1 \gets \text{from\_position\_to\_grid\_coordinate}(P_2)$ \\
+	\If{\text{is\_out\_of\_grid}($p_0$) \textbf{or} \text{is\_out\_of\_grid}($p_1$)}{
+		\Return
+	}
+	$dx \gets p_1.x - p_0.x$ \\
+	$dy \gets p_1.y - p_0.y$ \\
+	$sx \gets \text{sign}(dx)$ \\
+	$sy \gets \text{sign}(dy)$ \\
+	$err = dx - dy$ \\
+	\While{$p_0 \neq p_1$}{
+		\If{$pwd \leq threshold$ \textbf{and} $G(p_0) = \text{UNKNOWN}$}{
+			$G(p_0) \gets \text{OCCUPIED}$
+		}
+		\ElseIf{$pwd > threshold$}{
+			$G(p_0) \gets \text{EMPTY}$
+		}
+		$e2 \gets 2 \times err$ \\
+		\If{$e2 > -dy$}{
+			$err \gets err - dy$ \\
+			$p_0.x \gets p_0.x + sx$
+		}
+		\If{$e2 < dx$}{
+			$err \gets err + dx$ \\
+			$p_0.y \gets p_0.y + sy$
+		}
+	}
+\end{algorithm}
 
+We use Bresenham's line algorithm to determine the points of the line segment between the two robots.
+The algorithm is presented at Algorithm~\ref{alg:Bresenham}.
+The part adapted to our problem is between lines 12 and 17 of the latter.
+At this point, we check if the signal strength is sufficiently impaired and if the point of the line segment between the two robots has not already been perceived as free of corrosion.
+If so, then the considered point is marked as corrosion, modeled by the value \texttt{OCCUPIED}.
+If the signal strength is not sufficiently altered, then the considered point is marked as being free of corrosion, modeled by the value \texttt{EMPTY}.
+Once all the points of the segment have been traversed, the $G$ grid is updated with the new information.
+Bresenham's line algorithm thus contributes to the construction of the occupation grid which makes it possible to locate the corrosion zones detected by the robots during the acoustic inspection of metal structures.
 
+\subsection*{\textit{Roller Painting} and \textit{Nordic Skiing} Algorithms}
 
-\section*{Experiments}
+We present in this subsection the implementations of the \textit{Roller Painting} and \textit{Nordic Skiing} algorithms.
+Their source code is available on GitLab, here\footnote{\url{https://gitlab.georgiatech-metz.fr/bugwright2/bugwright2-ws/blob/cr_nav_strat/bugwright_ws/src/floor_nav/missions/peinture_au_rouleau.py}} and here\footnote{\url{https://gitlab.georgiatech-metz.fr/bugwright2/bugwright2-ws/blob/cr_nav_strat/bugwright_ws/src/floor_nav/missions/ski_nordique.py}}.
+
+The implementations of these algorithms have been made using the Python programming language and the ROS (Robot Operating System) libraries.
+In these implementations, we use the ROS Task Manager~\cite{ROSTaskManager} framework to manage the tasks of the robot inspectors.
+First, we initialize the ROS node and create a task client.
+Then, we retrieve the necessary parameters such as the speed of the crawlers, the crawler identifier, the distance between the crawlers, the overlap or the dimensions of the surface to be inspected.
+
+The algorithms are then executed following a sequence of precise movements.
+For each crawler, we define vertical and horizontal trajectories using an iterative loop and mathematical calculations.
+Crawlers move along defined paths, using task client functions such as \texttt{AlignWithTarget} and \texttt{FollowLine} to maintain a precise path.
+
+During the execution of the algorithms, the crawlers synchronize using the \texttt{SetStatusSync} and \texttt{WaitForStatusSync} functions of the task client.
+This ensures that the crawlers perform the movements in a coordinated manner and position themselves correctly to cover the entire metal surface.
+At the end of each movement step, the status is updated and synchronization is performed with the corresponding partner.
+
+The implementation of the two algorithms \textit{Roller Painting} and \textit{Nordic Skiing} allow crawlers to explore the metal surface in a methodical and complete way.
+Using vertical and horizontal trajectories, crawlers traverse the surface overlapping previously inspected areas to ensure optimal coverage.
+Here we have used a 10 cm overlap between the different vertical and horizontal trajectories.
+
+Once the algorithms are completed, the execution time is recorded, providing an indication of how long it took to inspect the metal surface.
+The occupancy grid is also recorded in order to calculate the inspection score.
+This implementation is an essential step in our proposed solution for the acoustic inspection of metal structures and guarantees complete and effective coverage of the surface to be inspected.
+
+\subsection*{\textit{Polygonal Investigation} Algorithm}
+
+We present in this subsection the implementation of the \textit{Polygonal Investigation} algorithm.
+The corresponding source code is available on GitLab~\footnote{\url{https://gitlab.georgiatech-metz.fr/bugwright2/bugwright2-ws/blob/cr_nav_strat/bugwright_ws/src/floor_nav/missions/investigation_polygonale.py}} .
+
+The implementation of this algorithm was also carried out using the Python programming language and the ROS (Robot Operating System) libraries.
+In this implementation, we still use the ROS Task Manager~\cite{ROSTaskManager} framework to manage the tasks of the inspector robots.
+First, we initialize the ROS node and retrieve the different parameters and more particularly the map of potential corrosion zones, on which we base ourselves for the inspection, which come from one of the two coarse strategies.
+Next, we extract the strongly connected components from the map using the \texttt{connectedComponentsWithStats} function from the \textit{OpenCV} library.
+This function uses Bolleli's spaghetti algorithm~\cite{BolelliSpaghetti} to extract strongly connected components from an image.
+For each of these components, we retrieve its center and its dimensions.
+Next, we construct a $p \in \mathbb{N}$ sided polygon around each center of a component.
+To do this, we place $p$ points on an ellipse centered on the center of the component and whose axes are the dimensions of the component.
+We therefore have for each potential zone of corrosion a polygon with $p$ sides which surrounds it.
+All that remains is to find the shortest path that passes through all the polygons.
+For this, we use the \textit{Gurobi} library to solve a simple TSP in the case where the number of teams of robots $k = 1$.
+When $k > 1$, we use the genetic algorithm proposed by Elad Kivelevitch~\cite{MDMTSPV_GA} to solve the mTSP problem with multiple repositories.
+
+Once the algorithms are completed, the run time is recorded, providing an indication of how long it will take to inspect the various potential areas of corrosion.
+The occupancy grid is also recorded in order to calculate the inspection score.
+This implementation is an essential step in our proposed solution for the acoustic inspection of metal structures and allows us to investigate potential areas of corrosion in an efficient way.
+
+\subsection*{Algorithm for Calculating Cohen's $\kappa$}
+
+Assessing the quality and reliability of acoustic inspection results is essential to ensure accurate measurements of the condition of metal structures.
+In this subsection, we present the algorithm for calculating Cohen's $\kappa$~\cite{enwiki:1130024730}, introduced in algorithm~\ref{alg:Cohen_Kappa}, a statistical measure commonly used to assess the agreement between the results obtained by the robots and a human reference.
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|c|c|}
+		\hline
+		$\kappa$ & Interpretation \\
+		\hline
+		$< 0$ & Disagreement \\
+		\hline
+		$0.00 - $0.20 & Very Low agreement \\
+		\hline
+		$0.21 - $0.40 & Low agreement \\
+		\hline
+		$0.41 - $0.60 & Moderate agreement \\
+		\hline
+		$0.61 - $0.80 & Strong agreement \\
+		\hline
+		$0.81 - $1.00 & Almost perfect agreement \\
+		\hline
+	\end{tabular}
+	\caption{Interpretation of Cohen's $\kappa$ according to Landis and Koch.}
+	\label{tab:Kappa_Cohen}
+\end{table}
+
+Cohen's $\kappa$ calculation algorithm is based on the notion of concordance and discordance between the results of inspections carried out by robots and those carried out by human inspectors (ground truth).
+It takes into account the positive, negative, false positive and false negative results obtained during the acoustic inspection.
+This information is used to calculate the value of the Cohen coefficient, noted $\kappa$, with $\kappa = \frac{p_o - p_e}{1 - p_e}$, where $p_o$ is the observed rate of agreement and $p_e$ the expected agreement rate.
+
+\begin{algorithm}[h!]
+	\caption{Cohen's $\kappa$ algorithm.}
+	\label{alg:Cohen_Kappa}
+	\KwData{$I_0$: $l \times w \times 3 \rightarrow [0 .. 255]$, $I$: $l \times w \times 3 \rightarrow [0 .. 255]$, $l \in \mathbb{N}$, $w \in \mathbb{N}$ \\
+		with $I_0$ the ground truth image and $I$ the image to score.}
+	\KwResult{$\kappa \in [0, 1]$}
+	$TP \gets 0$ \\
+	$TN \gets 0$ \\
+	$FP \gets 0$ \\
+	$FN \gets 0$ \\
+	\For{$i \gets 1$ \KwTo $l$}{
+		\For{$j \gets 1$ \KwTo $w$}{
+			\If{$\text{is\_label\_1}(I_0(i, j))$}{
+				\If{$\text{is\_label\_1}(I(i, j))$}{
+					$TP \gets TP + 1$
+				}
+				\Else{
+					$FN \gets FN + 1$
+				}
+			}
+			\Else{
+				\If{$\text{is\_label\_1}(I(i, j))$}{
+					$FP \gets FP + 1$
+				}
+				\Else{
+					$TN \gets TN + 1$
+				}
+			}
+		}
+	}
+	$f_c \gets \frac{(TN + FN) (TN + FP) + (FP + TP) (FN + TP)}{TP + TN + FN +FP}$ \\
+	$\kappa \gets \frac{TP + TN - f_c}{TP + TN + FN + FP - f_c}$
+\end{algorithm}
+
+The algorithm proceeds in several steps.
+First, the results of the inspections carried out by the robots and the actual distributions of the corrosion zones are compared for each zone inspected.
+To do this, we compare the values of each cell of the occupancy grid, obtained at the end of the inspection by the robots, with those of the ground truth.
+Having modeled the different test environments, we know the true distribution of the corrosion zones.
+Then, the results are grouped into four categories: positive agreement, negative agreement, positive discrepancy (false positives), and negative discrepancy (false negatives).
+These categories are used to calculate the observation and agreement rates observed between the robots and the true distribution of the corrosion zones.
+Cohen's $\kappa$ is then calculated from observed observation and agreement rates, taking into account the possibility of concordance due to chance.
+The closer Cohen's $\kappa$ is to 1, the greater the agreement between the robot results and the ground truth results.
+On the other hand, a $\kappa$ close to 0 indicates a low level of agreement, while a negative $\kappa$ suggests a discrepancy between the results.
+An Interpretation of Cohen's $\kappa$ according to Landis and Koch is presented in table~\ref{tab:Kappa_Cohen}.
+
+We implemented this algorithm in our project, using the results of the acoustic inspections carried out by the robots and the maps composed of corrosion zones as a basis for comparison.
+This implementation allows us to obtain quantitative measures to evaluate the performance of our multi-robot navigation and control approach in the inspection of metal structures.
+In the next sections, we will detail the results obtained thanks to the application of this algorithm of the calculation of Cohen's $\kappa$.
+
+\section{Experiments}
 
 In this section, we present the experiments we conducted to validate and evaluate our different multi-robot navigation and control strategies in the context of acoustic inspection of metal structures.
 These experiments aim to demonstrate the efficiency, precision and reliability of our system in detecting and locating corrosion zones.
@@ -333,10 +513,10 @@ The size and location of corrosion areas are randomly generated.
 For the maps of 5, 8, 11 and 15 zones, we generated 5 different maps in order to have more representative results.
 We did not allow ourselves to generate several maps for the 20 and 30 zone maps, the polygonal investigation time being too long.
 
-We also simulated the UGW sensor by exploiting the simulation of a UWB sensor.
-This UWB sensor makes it possible to emit a pulse and to receive it.
+We also simulated the \gls{ugw} sensor by exploiting the simulation of a \gls{uwb} sensor.
+This \gls{uwb} sensor makes it possible to emit a pulse and to receive it.
 By measuring the signal strength, we are able to know whether the signal has passed through an object or not.
-The behavior of this UWB sensor is therefore similar to that of the UGW sensor, namely that it makes it possible to detect the presence of an object between two points, but not to locate it.
+The behavior of this \gls{uwb} sensor is therefore similar to that of the \gls{ugw} sensor, namely that it makes it possible to detect the presence of an object between two points, but not to locate it.
 
 We evaluated the performance of the three navigation strategies in terms of Cohen's $\kappa$ and inspection time.
 For the \textit{Roller Painting} and \textit{Nordic Skiing} strategy, we only used two robots.

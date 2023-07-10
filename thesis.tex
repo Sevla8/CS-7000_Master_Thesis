@@ -4,10 +4,9 @@
 \usepackage{indentfirst}
 \usepackage{multirow}
 \usepackage{multicol}
-\usepackage{amssymb}
-\usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amsthm}
+\usepackage[ruled,linesnumbered]{algorithm2e}
 
 \newtheorem{lemma}{Lemma}
 \newtheorem{proposition}{Proposition}
@@ -17,17 +16,17 @@
 
 \title{Multi-robot navigation and control for acoustic inspection of metal plate structures}
 \author{Brandon Alves}
-\approvaldate{TBD}
+\approvaldate{July 20, 2023}
 \school{School of Computer Science}
 \department{Department of Interactive Computing}
-\bibliography{references}
+\addbibresource{references.bib}
 
 \begin{document}
 
-	\makeTitlePage{Jan}{2020 TBD}
+	\makeTitlePage{July}{2023}
 	\input{approvalPage.tex}
-	\makeEpigraph{I'm not super. Any talents I have, I worked for -- it seems a long time since I thought of myself as a hero.}{Oliver Queen}
-	\makeDedication{For my cousin Kara}
+	% \makeEpigraph{I'm not super. Any talents I have, I worked for -- it seems a long time since I thought of myself as a hero.}{Oliver Queen}
+	% \makeDedication{For my cousin Kara}
 
 	\begin{frontmatter}
 		\input{acknowledgments}
@@ -35,6 +34,7 @@
 		\makeListOfTables
 		\makeListOfFigures
 		\input{abbrevs}
+		\makeListOfAcronyms
 		\input{summary}
 	\end{frontmatter}
 
