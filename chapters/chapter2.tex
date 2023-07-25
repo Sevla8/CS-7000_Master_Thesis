@@ -149,52 +149,52 @@ The process is then repeated for each robot of each team until the vertices occu
 
 \begin{figure}[h!]
 	\centering
-	\begin{subfigure}[t]{0.3\linewidth}
+	\begin{subfigure}[t]{0.27\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/triangle_1.png}
-		\caption{Initial phase.}
+		\caption{Initial phase, crawlers are positioned on consecutive vertices of the polygon.}
 		\label{fig:triangle_1}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[t]{0.3\linewidth}
+	\begin{subfigure}[t]{0.27\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/triangle_2.png}
-		\caption{First phase of movement.}
+		\caption{First phase of movement, crawler 2 moves from vertex 2 to vertex 3.}
 		\label{fig:triangle_2}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[t]{0.3\linewidth}
+	\begin{subfigure}[t]{0.27\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/triangle_3.png}
-		\caption{Second phase.}
+		\caption{Second phase, crawler 2 reaches vertex 3 and stops.}
 		\label{fig:triangle_3}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[t]{0.3\linewidth}
+	\begin{subfigure}[t]{0.27\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/triangle_4.png}
-		\caption{Second phase of movement.}
+		\caption{Second phase of movement, crawler 1 moves from vertex 1 to vertex 2.}
 		\label{fig:triangle_4}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[t]{0.3\linewidth}
+	\begin{subfigure}[t]{0.27\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/triangle_5.png}
-		\caption{Third phase.}
+		\caption{Third phase, crawler 1 reaches vertex 2 and stops.}
 		\label{fig:triangle_5}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[t]{0.3\linewidth}
+	\begin{subfigure}[t]{0.27\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/triangle_6.png}
-		\caption{Third phase of movement..}
+		\caption{Third phase of movement, crawler 2 moves from vertex 3 to vertex 1.}
 		\label{fig:triangle_6}
 	\end{subfigure}
 	\hfill
-	\begin{subfigure}[t]{0.3\linewidth}
+	\begin{subfigure}[t]{0.27\linewidth}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/triangle_7.png}
-		\caption{Last phase.}
+		\caption{Last phase, crawler 2 reaches vertex 1 and stops.}
 		\label{fig:triangle_7}
 	\end{subfigure}
 		\caption{Movement phases of the \textit{Polygonal Investigation} navigation strategy.}
@@ -202,12 +202,12 @@ The process is then repeated for each robot of each team until the vertices occu
 \end{figure}
 
 We present in \ref{fig:triangle} an example of the different moving phases of the \textit{Polygonal Investigation} navigation strategy with $k = 1$ team, $n = 2$ robots and $p = 3$ vertices.
-On these different figures, we have represented a corrosion zone by a circle and an approximation of this zone by a shape enveloping the circle.
+On these different figures, we have represented a corrosion zone by a circle and an approximation of this zone by a square enveloping the circle, as we can see in \ref{fig:triangle_1}.
 The objective is to approach the corrosion zone as finely as possible.
-The corrosion zone is not known in advance, only the shape enveloping the circle is known.
-\ref{fig:triangle_1} presents the initial phase of the \textit{Polygonal Investigation} navigation strategy.
-\ref{fig:triangle_2} shows the first moving phase of the \textit{Polygonal Investigation} navigation strategy, while the crawler $CR2$ moves forward.
-We can see that after the $CR2$ crawler has moved forward, part of the suspected corrosion area is removed and considered healthy, as we can see in \ref{fig:triangle_3}.
+The corrosion zone is not known in advance, only the shape of the square enveloping the circle is known.
+\ref{fig:triangle_1} presents the initial phase of the \textit{Polygonal Investigation} navigation strategy, where the two crawlers are positioned on consecutive vertices of the polygon.
+\ref{fig:triangle_2} shows the first moving phase of the \textit{Polygonal Investigation} navigation strategy, while the crawler 2 moves from vertex 2 to vertex 3, until it reaches the latter, as we can see in \ref{fig:triangle_3}.
+We can see that after the crawler 2 has reached vertex 3, part of the suspected corrosion area is removed and considered healthy, as we can see in \ref{fig:triangle_3}.
 The crawlers keep moving until they reach their initial position, as we can see in \ref{fig:triangle_7}.
 
 \begin{definition}[Phantom zone]
@@ -302,7 +302,7 @@ To do this, we use the formulation presented in \ref{eq:tsp}.
 	\end{array}
 \end{equation}
 
-The objective function to be minimized from the \ref{eq:tsp} is the sum of the distances between each pair of cities.
+The objective function to be minimized from the \ref{eq:tsp} is the sum of the distances between each pair of locations.
 The first two constraints ensure that each city is visited exactly once.
 The third constraint ensures that the cycle formed by the cities visited is simple, that is to say, that it does not contain sub-cycles.
 The last constraint ensures that the decision variables $x_{ij}$ are binary, with $x_{ij} = 1$ if the robot moves from city $i$ to city $j$ and $x_{ij} = 0$ otherwise.

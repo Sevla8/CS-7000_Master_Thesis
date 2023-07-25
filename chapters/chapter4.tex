@@ -23,16 +23,17 @@ In this subsection, we compare the performance of different multi-robot navigati
 
 We present on the \ref{fig:investigation_polygonale-peinture_au_rouleau_ski_nordique_for_each_world} the evolution of the Cohen score and the execution time according to the density of the world, for each algorithm.
 In this figure, we have represented the scores and execution times obtained, on average, for the different values of $d$ and $s$, for the sake of readability.
-We therefore obtain, on average, a value $d = 3$ meters and $s = 3$ meters.
+We therefore obtain, on average, $d = 3$ meters and $s = 3$ meters.
 A more detailed version, for each value of $d$, is available in \ref{annexe:comparaison}, in \ref{fig:investigation_polygonale-peinture_au_rouleau_ski_nordique_for_each_d}.
 
-We can observe on the \ref{fig:investigation_polygonale-peinture_au_rouleau_ski_nordique-kappa_for_each_world_vs_investigation_polygonale-kappa_for_each_d} that the Cohen score obtained by the algorithm \textit{Polygonale Investigation} is higher than those obtained by the \textit{Roller Painting} and \textit{Nordic Skiing} algorithms.
+We can observe on the \ref{fig:investigation_polygonale-peinture_au_rouleau_ski_nordique-kappa_for_each_world_vs_investigation_polygonale-kappa_for_each_d} that the Cohen score obtained by the algorithm \textit{Polygonal Investigation} is higher than those obtained by the \textit{Roller Painting} and \textit{Nordic Skiing} algorithms.
 Only the \textit{Polygonal Investigation} strategy made it possible to obtain a Cohen score considered as \textit{almost perfect agreement} (greater than 0.8) according to Landis and Koch.
 
 We can observe on the \ref{fig:investigation_polygonale-peinture_au_rouleau_ski_nordique-time_for_each_world_vs_investigation_polygonale-time_for_each_d} that the execution time of the \textit{Roller Painting} algorithm is lower than those obtained by the \textit{Polygonal Investigation} and \textit{Nordic Skiing} algorithms.
 For low map densities like those used in our experiments, the \textit{Nordic Skiing} algorithm is the slowest.
 This result should be qualified.
 Indeed, for higher densities, the \textit{Polygonal Investigation} algorithm becomes slower than the \textit{Nordic Skiing} algorithm, as we can already almost see for the map with 11 corrosion zones.
+This is due to the fact that the \textit{Polygonal Investigation} has a linear dependence on the number of corrosion zones, while the two other algorithms do not depend on the number of corrosion zones.
 
 \begin{table}[h!]
 	\centering
@@ -55,6 +56,10 @@ The \ref{tab:gain} presents the performance gain provided by the \textit{Polygon
 Here, we considered the investigation time of the \textit{Polygonal Investigation} strategy to be equal to the sum of the investigation times of the \textit{Polygonal Investigation} strategy and the \textit{Roller Painting} strategy since the first strategy is based on the second to explore the corrosion zones.
 We can observe that the \textit{Polygonal Investigation} algorithm achieves a Cohen score 68.39\% higher than that obtained by the \textit{Roller Painting} algorithm, although it is much slower than this last.
 On the other hand, the \textit{Polygonal Investigation} algorithm makes it possible to obtain a Cohen score 27.92\% higher than that obtained by the algorithm \textit{Nordic Skiing}, while being faster than the latter.
+
+The \textit{Polygonal Investigation} strategy is therefore the best strategy in terms of performance, in our experiments, as well as a trade-off between the Cohen score and the execution time.
+The performance gain provided by the \textit{Polygonal Investigation} strategy  is explained by the fact that this strategy permits to greatly vary the vector of the signal emitted and received by the robots, and therefore to approach the convex envelope of the corrosion zones as closely as possible.
+
 
 \section{Theoretical Study of Properties of the Solution Proposal}
 

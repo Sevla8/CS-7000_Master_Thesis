@@ -43,7 +43,9 @@ We use \textit{crawler} robots. These robots are equipped with two drive wheels 
 An example crawler is shown in \ref{fig:crawler}.
 The pose of the robot is defined by a triple $(x, y, \theta)$ where $x$ and $y$ are the coordinates of the robot in the environment and $\theta$ is the orientation of the robot in the environment.
 We assume that the pose of the robot is known.
+This assumption is justified by the fact that localization is not the subject of our project and that in the context of the BugWright2 project, localization has already been studied for these robots, as explained in \ref{sec:background} and more precisely in~\cite{9364359}.
 We also assume that the robots are able to synchronize in order to be able to move simultaneously or alternatively.
+Again, this assumption is justified by the fact that synchronization is not the subject of our project and we found in the literature that this problem has already been studied.
 We note $cr$ the unit cost of rotation of the robot and $ct$ the unit cost of translation of the robot.
 
 \begin{figure}[h!]
@@ -65,11 +67,13 @@ The \gls{imu} sensor makes it possible to know the orientation of the robot in t
 The \gls{ugw} sensor detects the presence of corrosion on the metal surface by emitting and receiving ultrasonic waves.
 The \gls{lidar} sensor detects obstacles in the environment.
 The obstacles considered here are mainly the various robots inspecting the metal surface.
+The metal surface is considered to be flat and horizontal, and the robots are considered to be able to move on it without difficulty.
 Corrosion zones are detected by the emission of ultrasonic waves by a robot and the reception of these waves by another robot.
 Insofar as the wave received by one of the crawlers is altered, then there is a point of corrosion between the transmitter robot and the receiver robot.
 The detection of these corrosion zones is carried out in real time.
 The maximum range of ultrasonic waves is noted $d_{max}$.
 We approximate the propagation time of ultrasonic waves in the metal surface by zero time.
+This approximation is justified by the fact that the speed of propagation of ultrasonic waves in the metal surface is very high compared to the speed of the robots.
 
 We use an occupancy grid to model the environment in which robots evolve during the acoustic inspection of metal structures.
 This grid allows us to represent and categorize the different states of the areas of the metal surface.
@@ -85,9 +89,9 @@ This allows us to plan robot movements, optimize their trajectory and ensure ful
 In addition, this representation gives us a clear view of the state of corrosion of the metal structure, thus facilitating the analysis and evaluation of the results of the inspection.
 
 In the rest of our proposal, we will detail the algorithms and methods used to update the occupancy grid according to the information collected by the robots' sensors.
-We will also discuss multi-robot navigation strategies that leverage this modeling to optimize data acquisition and improve the efficiency of acoustic inspection.
+We will also discuss multi-robot navigation strategies that leverage this modeling to optimize data acquisition, with repect to time and accuracy, and improve the efficiency of acoustic inspection.
 
-\section{Background}
+\section{Background}\label{sec:background}
 
 We present here the state of the art in the field of multi-robot navigation and control for the acoustic inspection of metal structures.
 The objective of this literature review was to collect key information, analyze previous work and situate our project in the existing research context.
