@@ -8,7 +8,8 @@
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage[ruled,linesnumbered]{algorithm2e}
-
+\usepackage{floatrow}
+\floatsetup[table]{capposition=top}
 \newtheorem{lemma}{Lemma}
 \newtheorem{proposition}{Proposition}
 \newtheorem{corollary}{Corollary}
@@ -16,6 +17,10 @@
 \newtheorem{definition}{Definition}
 \newcommand*{\definitionautorefname}{Definition}
 \newcommand*{\propositionautorefname}{Proposition}
+\newcommand{\makeSummaryTOC}{
+\phantomsection
+\addcontentsline{toc}{chapter}{Summary}
+}
 
 \title{Multi-robot navigation and control for acoustic inspection of metal plate structures}
 \author{Brandon Alves}
@@ -26,7 +31,7 @@
 
 \begin{document}
 
-	\makeTitlePage{July}{2023}
+	\makeTitlePage{August}{2023}
 	\input{approvalPage.tex}
 	% \makeEpigraph{I'm not super. Any talents I have, I worked for -- it seems a long time since I thought of myself as a hero.}{Oliver Queen}
 	% \makeDedication{For my cousin Kara}
@@ -39,6 +44,7 @@
 		\input{abbrevs}
 		\makeListOfAcronyms
 		\input{summary}
+		\makeSummaryTOC
 	\end{frontmatter}
 
 	\begin{thesisbody}
